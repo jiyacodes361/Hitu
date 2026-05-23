@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Friendship Memories</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:
+    linear-gradient(
+    135deg,
+    #f3e8ff 0%,
+    #ddd6fe 35%,
+    #dbeafe 70%,
+    #f5d0fe 100%);
+    min-height:100vh;
+    overflow-x:hidden;
+    color:#444;
+}
+
+/* Floating Friendship Icons */
+.friend-icon{
+    position:fixed;
+    top:-10vh;
+    z-index:-1;
+    opacity:.55;
+    animation:floatDown linear infinite;
+    user-select:none;
+}
+
+@keyframes floatDown{
+    0%{
+        transform:translateY(-10vh) rotate(0deg);
+        opacity:.8;
+    }
+
+    100%{
+        transform:translateY(110vh) rotate(360deg);
+        opacity:0;
+    }
+}
+
+/* Header */
+header{
+    text-align:center;
+    padding:80px 20px 40px;
+}
+
+header h1{
+    font-family:'Pacifico',cursive;
+    font-size:4rem;
+    color:#7c3aed;
+    text-shadow:
+    0 5px 20px rgba(124,58,237,.2);
+}
+
+header p{
+    margin-top:15px;
+    font-size:1.1rem;
+    color:#666;
+    max-width:700px;
+    margin-inline:auto;
+}
+
+/* Gallery */
+.gallery-container{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(260px,1fr));
+
+    gap:30px;
+    max-width:1300px;
+    margin:auto;
+    padding:20px;
+}
+
+/* Polaroid Cards */
+.gallery-item{
+    width:100%;
+    height:320px;
+    object-fit:cover;
+
+    background:white;
+    border-radius:28px;
+
+    border:6px solid rgba(255,255,255,.9);
+
+    box-shadow:
+    0 12px 30px rgba(124,58,237,.14),
+    0 5px 15px rgba(0,0,0,.08);
+
+    transition:.45s ease;
+    cursor:pointer;
+}
+
+/* Hover Animation */
+.gallery-item:hover{
+    transform:
+    translateY(-12px)
+    rotate(-2deg)
+    scale(1.03);
+
+    box-shadow:
+    0 22px 40px rgba(124,58,237,.18),
+    0 12px 25px rgba(0,0,0,.12);
+}
+
+/* Modal */
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:
+    rgba(40,25,70,.82);
+
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+
+    backdrop-filter:blur(12px);
+    z-index:999;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-media{
+    max-width:90%;
+    max-height:75vh;
+
+    border-radius:28px;
+
+    border:4px solid rgba(255,255,255,.25);
+
+    animation:popup .4s ease;
+}
+
+@keyframes popup{
+    from{
+        transform:scale(.8);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+/* Close Button */
+.close-btn{
+    position:absolute;
+    top:20px;
+    right:35px;
+
+    font-size:50px;
+    color:white;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.close-btn:hover{
+    transform:rotate(90deg);
+}
+
+/* Friendship Message */
+.friendship-box{
+    max-width:1000px;
+    margin:70px auto;
+    padding:45px;
+
+    border-radius:35px;
+
+    background:
+    rgba(255,255,255,.35);
+
+    backdrop-filter:blur(16px);
+
+    box-shadow:
+    0 10px 35px rgba(124,58,237,.12);
+}
+
+.friendship-box h2{
+    text-align:center;
+    color:#7c3aed;
+    font-size:2.3rem;
+    margin-bottom:20px;
+}
+
+.friendship-box p{
+    line-height:2;
+    text-align:center;
+    color:#555;
+}
+
+/* Responsive */
+@media(max-width:768px){
+
+header h1{
+    font-size:2.7rem;
+}
+
+.gallery-item{
+    height:260px;
+}
+
+.friendship-box{
+    margin:40px 20px;
+    padding:25px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<script>
+
+const icons =
+['✨','⭐','🎈','📸','💫','🌈'];
+
+for(let i=0;i<20;i++){
+
+    const icon =
+    document.createElement('div');
+
+    icon.className =
+    'friend-icon';
+
+    icon.innerHTML =
+    icons[Math.floor(
+    Math.random()*icons.length)];
+
+    icon.style.left =
+    Math.random()*100+'vw';
+
+    icon.style.animationDuration =
+    (Math.random()*8+10)+'s';
+
+    icon.style.animationDelay =
+    Math.random()*5+'s';
+
+    icon.style.fontSize =
+    (Math.random()*1.5+1)+'rem';
+
+    document.body.appendChild(icon);
+}
+
+</script>
+
+<header>
+
+<h1>✨ Friendship Memories ✨</h1>
+
+<p>
+Every picture holds a story of
+laughter, madness, happiness,
+and unforgettable memories 💜
+</p>
+
+</header>
+
+<main>
+<div
+class="gallery-container"
+id="gallery">
+</div>
+</main>
+
+<!-- Modal -->
+
+<div
+id="mediaModal"
+class="modal">
+
+<span class="close-btn">
+&times;
+</span>
+
+<img
+class="modal-media"
+id="expandedImg">
+
+<video
+class="modal-media"
+id="expandedVideo"
+controls>
+</video>
+
+</div>
+
+<script>
+
+document.addEventListener(
+'DOMContentLoaded',()=>{
+
+const gallery =
+document.getElementById(
+'gallery');
+
+const modal =
+document.getElementById(
+'mediaModal');
+
+const expandedImg =
+document.getElementById(
+'expandedImg');
+
+const expandedVideo =
+document.getElementById(
+'expandedVideo');
+
+const closeBtn =
+document.querySelector(
+'.close-btn');
+
+const folderName =
+"images/";
+
+const videoExtensions =
+['mp4','webm',
+'ogg','mov'];
+
+const myFiles = [
+
+'1.jpeg',
+'2.jpeg',
+'4.jpeg',
+'5.mp4',
+'6.jpeg',
+'7.jpeg',
+'8.mp4',
+'9.jpeg',
+'10.jpeg',
+'11.jpeg',
+'12.mp4',
+'13.jpeg',
+'52.mp4',
+'14.mp4',
+'15.mp4',
+'16.mp4',
+'17.jpeg',
+'18.mp4',
+'19.jpeg',
+'51.jpeg',
+'20.jpeg',
+'20.mp4',
+'21.jpeg',
+'22.jpeg',
+'23.jpeg',
+'53.jpeg',
+'24.jpeg',
+'25.mp4',
+'26.mp4',
+'27.jpeg',
+'28.jpeg',
+'29.jpeg',
+'30.jpeg',
+'54.jpeg',
+'31.jpeg',
+'48.jpeg',
+'33.jpeg',
+'34.mp4',
+'35.mp4',
+'36.jpeg',
+'37.jpeg',
+'38.jpeg',
+'39.mp4',
+'40.mp4',
+'55.jpeg',
+'41.jpeg',
+'42.jpeg',
+'43.jpeg',
+'3.jpeg',
+'44.jpeg',
+'45.jpeg',
+'46.jpeg',
+'49.mp4',
+'50.jpeg'
+
+];
+
+myFiles.forEach(file=>{
+
+const fileUrl =
+folderName + file;
+
+const ext =
+file.split('.')
+.pop()
+.toLowerCase();
+
+const isVideo =
+videoExtensions
+.includes(ext);
+
+let media;
+
+if(isVideo){
+
+media =
+document.createElement(
+'video');
+
+media.src =
+fileUrl;
+
+media.muted =
+true;
+
+media.preload =
+"metadata";
+
+}else{
+
+media =
+document.createElement(
+'img');
+
+media.src =
+fileUrl;
+
+media.loading =
+"lazy";
+}
+
+media.className =
+'gallery-item';
+
+media.onclick =
+function(){
+
+if(isVideo){
+
+expandedImg
+.style.display =
+'none';
+
+expandedVideo
+.style.display =
+'block';
+
+expandedVideo.src =
+fileUrl;
+
+expandedVideo.play();
+
+}else{
+
+expandedVideo
+.style.display =
+'none';
+
+expandedImg
+.style.display =
+'block';
+
+expandedImg.src =
+fileUrl;
+
+expandedVideo.pause();
+
+expandedVideo
+.currentTime = 0;
+}
+
+modal.classList
+.add('show');
+};
+
+gallery
+.appendChild(media);
+
+});
+
+function closeModal(){
+
+modal.classList
+.remove('show');
+
+expandedVideo.pause();
+
+expandedVideo
+.currentTime = 0;
+}
+
+closeBtn
+.addEventListener(
+'click',
+closeModal);
+
+modal
+.addEventListener(
+'click',
+(e)=>{
+
+if(
+e.target===modal
+){
+closeModal();
+}
+
+});
+
+});
+
+</script>
+
+<div class="friendship-box">
+
+<h2>
+💜 Forever Friends 💜
+</h2>
+
+<p>
+Some friendships are made of
+crazy moments, random laughs,
+late-night talks, and memories
+that never fade.
+
+Every picture here holds a
+special moment of our journey —
+the smiles, the fun, the madness,
+and the memories we’ll always
+cherish.
+
+No matter where life takes us,
+real friendship never changes.
+
+Distance may grow,
+time may pass,
+but memories stay forever.
+
+Thank you for being part of
+our happiest moments 💜✨
+</p>
+
+</div>
+
+</body>
+</html>
